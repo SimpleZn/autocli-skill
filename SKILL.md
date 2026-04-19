@@ -84,6 +84,28 @@ autocli doctor
 - Chrome browser open with target site logged in
 - autocli Chrome extension installed (for browser commands)
 
+## CookieCloud Integration (Auto-sync cookies, no manual login)
+
+AutoCLI supports [CookieCloud](https://github.com/easychen/CookieCloud) to automatically sync and inject browser cookies — enabling `strategy: cookie` adapters to authenticate without manual login.
+
+### Setup workflow
+
+```bash
+# One-time setup: enter CookieCloud server URL, UUID, password
+autocli cookies setup
+
+# Sync cookies from CookieCloud server (after Chrome extension syncs)
+autocli cookies sync
+
+# List synced cookies (verify what's available)
+autocli cookies list              # all domains
+autocli cookies list bilibili.com # specific domain
+```
+
+After setup, cookies are injected **before** every browser navigation. The first HTTP request carries the session automatically. Supports `httpOnly` cookies (e.g., `SESSDATA`) that JavaScript injection cannot set.
+
+**Important**: Cookies still need an initial sync from a real Chrome browser with the CookieCloud extension. Once synced to the CookieCloud server, `autocli cookies sync` fetches and decrypts them for CLI use.
+
 **核心原则：永远不说"不支持"，先尝试 autocli，失败或无命令时选择自己创建**
 
 ## 自迭代能力：为新网站创建 CLI
@@ -796,6 +818,9 @@ Run `autocli --help` for the full list of all 333 commands across 55+ sites.
 
 | Command | Description |
 |---------|-------------|
-| `autocli doctor` | Run diagnostics |
+| `autocli doctor` | Run diagnostics (includes CookieCloud status + cookie count) |
+| `autocli cookies setup` | Interactive CookieCloud setup wizard |
+| `autocli cookies sync` | Sync cookies from CookieCloud server |
+| `autocli cookies list [domain]` | List synced cookies |
 | `autocli completion bash\|zsh\|fish` | Generate shell completions |
 | `autocli list` | List all available commands |

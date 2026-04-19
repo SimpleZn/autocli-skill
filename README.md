@@ -156,6 +156,31 @@ autocli douban top250 --format json
 | Login state not recognized | In Chrome, manually log in to the target site first |
 | Browser commands timeout | Check `autocli doctor` for diagnostics |
 
+### CookieCloud Integration
+
+AutoCLI integrates with [CookieCloud](https://github.com/easychen/CookieCloud) to inject browser cookies from a self-hosted server into Chrome automation — no manual login needed.
+
+```bash
+# 1. Setup (one time)
+autocli cookies setup          # prompts for server URL, UUID, password
+
+# 2. Sync (after Chrome CookieCloud extension syncs)
+autocli cookies sync           # fetches & decrypts from CookieCloud server
+
+# 3. List (verify what was synced)
+autocli cookies list           # all domains
+autocli cookies list bilibili.com   # specific domain
+
+# 4. Use normally — cookies are injected automatically
+autocli bilibili me
+autocli weread shelf
+
+# 5. Diagnose
+autocli doctor                 # shows CookieCloud status + cookie count
+```
+
+Cookies are injected **before** page navigation so the very first HTTP request carries the session. Supports `httpOnly` cookies that JavaScript injection cannot set.
+
 ### Credits
 
 Built on **[nashsu/AutoCLI](https://github.com/nashsu/AutoCLI)** — a complete Rust rewrite of opencli, up to 12x faster with 10x less memory.
@@ -258,6 +283,31 @@ autocli notion search "会议记录"
 | Chrome 无法被控制 | 确保 Chrome 已打开，且 autocli Chrome 扩展已加载 |
 | 登录态未识别 | 在 Chrome 中手动登录目标网站后再试 |
 | 浏览器命令超时 | 运行 `autocli doctor` 进行诊断 |
+
+### CookieCloud 集成
+
+AutoCLI 集成了 [CookieCloud](https://github.com/easychen/CookieCloud) 以实现自动 Cookie 注入，无需手动登录。
+
+```bash
+# 1. 配置（仅需一次）
+autocli cookies setup          # 输入服务器 URL、UUID、密码
+
+# 2. 同步（Chrome CookieCloud 扩展同步后）
+autocli cookies sync           # 从 CookieCloud 服务器获取并解密
+
+# 3. 查看（确认同步内容）
+autocli cookies list           # 所有域名
+autocli cookies list bilibili.com   # 指定域名
+
+# 4. 正常使用 — Cookie 自动注入
+autocli bilibili me
+autocli weread shelf
+
+# 5. 诊断
+autocli doctor                 # 显示 CookieCloud 状态和 Cookie 数量
+```
+
+Cookie 在页面导航**前**注入，首次 HTTP 请求即携带会话。支持 JavaScript 注入无法设置的 `httpOnly` Cookie。
 
 ### 致谢
 
@@ -410,6 +460,31 @@ autocli notion search "議事録"
 | Chromeが制御できない | Chromeが起動中で、autocli Chrome拡張機能がロードされているか確認 |
 | ログイン状態が認識されない | Chromeで対象サイトに手動ログインしてから再試行 |
 | ブラウザコマンドがタイムアウト | `autocli doctor` で診断を実行 |
+
+### CookieCloud 統合
+
+AutoCLI は [CookieCloud](https://github.com/easychen/CookieCloud) を統合し、セルフホストサーバーからChromeにCookieを自動注入 — 手動ログイン不要です。
+
+```bash
+# 1. 設定（1回のみ）
+autocli cookies setup          # サーバーURL、UUID、パスワードを入力
+
+# 2. 同期（Chrome CookieCloud拡張機能の同期後）
+autocli cookies sync           # CookieCloudサーバーから取得・復号
+
+# 3. 確認（同期内容を確認）
+autocli cookies list           # 全ドメイン
+autocli cookies list bilibili.com   # 特定ドメイン
+
+# 4. 通常使用 — Cookieは自動的に注入
+autocli bilibili me
+autocli weread shelf
+
+# 5. 診断
+autocli doctor                 # CookieCloudステータスとCookie数を表示
+```
+
+Cookieはページナビゲーション**前**に注入されるため、最初のHTTPリクエストからセッションが保持されます。JavaScript注入では設定できない `httpOnly` Cookie にも対応しています。
 
 ### クレジット
 
